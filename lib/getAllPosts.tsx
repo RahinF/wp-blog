@@ -33,10 +33,11 @@ const query = `query GetAllPosts {
 }`;
 
 export default async function getAllPosts() {
-  return await axios({
-    url: process.env.BASE_URL,
-    method: 'POST',
-    data: { query },
-    headers: { 'Content-Type': 'application/json' },
-  }).then((response) => response.data);
+  return await axios
+    .post(
+      process.env.BASE_URL!,
+      { query },
+      { headers: { 'Content-Type': 'application/json' } },
+    )
+    .then((response) => response.data);
 }
