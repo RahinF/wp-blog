@@ -5,7 +5,9 @@ const query = `query GetAllPosts {
     nodes {
       id
       title
+      date
       excerpt
+      content
       slug
       author {
         node {
