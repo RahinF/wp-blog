@@ -19,6 +19,13 @@ const query = `query GetAllPosts {
           }
         }
       }
+      categories {
+        nodes {
+          id
+          name
+          slug
+        }
+      }
       commentCount
       featuredImage {
         node {

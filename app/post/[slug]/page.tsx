@@ -20,36 +20,6 @@ export async function generateMetadata({
   };
 }
 
-interface Category {
-  id: string;
-  name: string;
-  slug: string;
-}
-
-interface Tag {
-  id: string;
-  name: string;
-  slug: string;
-}
-
-interface FeaturedImage {
-  altText: string;
-  mediaDetails: {
-    height: number;
-    width: number;
-  };
-  sourceUrl: string;
-}
-
-interface Author {
-  avatar: {
-    height: number;
-    width: number;
-    url: string;
-  };
-  name: string;
-}
-
 interface Comment {
   date: string;
   content: string;
