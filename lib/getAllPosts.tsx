@@ -11,6 +11,7 @@ const query = `query GetAllPosts {
       slug
       author {
         node {
+          id
           name
           avatar {
             height

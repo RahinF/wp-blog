@@ -10,7 +10,7 @@ interface Post {
   slug: string;
   featuredImage: { node: FeaturedImage } | null;
   author: { node: Author } | null;
-  commentCount: number;
+  commentCount: number | null;
   categories: { nodes: Category[] };
 }
 

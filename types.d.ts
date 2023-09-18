@@ -8,6 +8,7 @@ interface FeaturedImage {
 }
 
 interface Author {
+  id: string;
   avatar: {
     height: number;
     width: number;

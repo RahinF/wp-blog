@@ -1,7 +1,7 @@
-import { timeAgo } from '@app/utils/timeAgoOrDate';
-import { BookOpenText, ChatCircleDots } from '@assets/icons';
-import { decode } from 'html-entities';
-import humanizeDuration from 'humanize-duration';
+import { ChatCircleDots, Clock } from '@assets/icons';
+import Categories from '@components/card/categories';
+import { calcAvgReadingTime } from '@utils/calcAvgReadingTime';
+import { timeAgo } from '@utils/timeAgoOrDate';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -12,30 +12,10 @@ interface Props {
   content: string;
   slug: string;
   featuredImage: { node: FeaturedImage } | null;
-  commentCount: number;
+  commentCount: number | null;
   author: { node: Author } | null;
   categories: { nodes: Category[] };
 }
-
-const calcAvgReadingTime = (content: string) => {
-  const decodedContent = decode(content);
-  const removedHTMLTags = decodedContent.replace(/<[^>]*>?/gm, '');
-  const removedLineBreak = removedHTMLTags.replace(/(\r\n|\n|\r)/gm, ' ');
-  const trimmedWhiteSpace = removedLineBreak.replace(/\s+/g, ' ').trim();
-  const wordCount = trimmedWhiteSpace.split(' ').length;
-
-  const averageWordReadPerMin = 238;
-  const wordsReadPerSec = averageWordReadPerMin / 60;
-  const readingTime = wordsReadPerSec * wordCount * 1000;
-
-  return humanizeDuration(readingTime, {
-    units: ['h', 'm'],
-    maxDecimalPoints: 0,
-    conjunction: ' and ',
-    largest: 1,
-    round: true,
-  });
-};
 
 const Card = ({
   author,
@@ -46,51 +26,32 @@ const Card = ({
   excerpt,
   featuredImage,
   slug,
-
   title,
 }: Props) => {
   const readingTime = calcAvgReadingTime(content);
-  const postedBy = `${author ? author.node.name : 'anonymous'}, ${timeAgo(
-    date,
-  )}`;
-
-  const TAGS_DISPLAY_COUNT: number = 3;
+  const postedDate = timeAgo(date);
 
   return (
     <article className="break-inside-avoid py-4 mb-6 flex flex-col gap-4">
-      <Link
-        href={`post/${slug}`}
-        className="flex flex-col gap-2"
-      >
-        {featuredImage && (
+      {featuredImage && (
+        <Link
+          href={`post/${slug}`}
+          className="flex flex-col gap-2"
+        >
           <Image
             src={featuredImage.node.sourceUrl}
             alt={featuredImage.node.altText}
             width={featuredImage.node.mediaDetails.width}
             height={featuredImage.node.mediaDetails.height}
-            className="self-center"
+            className="self-center w-full"
           />
-        )}
-      </Link>
-      <header>
-        <Link
-          href={`post/${slug}`}
-          className="flex flex-col gap-2"
-        >
+        </Link>
+      )}
+      <header className="flex flex-col gap-2">
+        <Link href={`post/${slug}`}>
           <h1 className="font-bold text-xl">{title}</h1>
         </Link>
-        {categories?.nodes && (
-          <div className="flex gap-4">
-            {categories.nodes.slice(0, TAGS_DISPLAY_COUNT).map((category) => (
-              <div
-                key={category.id}
-                className="bg-text-500 text-xs uppercase font-semibold"
-              >
-                {category.name}
-              </div>
-            ))}
-          </div>
-        )}
+        {categories?.nodes && <Categories categories={categories.nodes} />}
         <p
           dangerouslySetInnerHTML={{ __html: excerpt }}
           className="max-w-prose"
@@ -99,19 +60,27 @@ const Card = ({
 
       <footer className="flex divide-x gap-4 text-sm items-center text-neutral-600">
         <div className="flex gap-2">
-          <div>{postedBy}</div>
+          <div>
+            {author ? (
+              <Link href={`/author/${author.node.id}`}>{author.node.name}</Link>
+            ) : (
+              'anonymous'
+            )}
+            , {postedDate}
+          </div>
         </div>
         <div className="flex gap-2 items-center pl-4">
           <ChatCircleDots
             size={20}
             weight="fill"
+            data-testid="icon-comment"
           />
           <span>{commentCount ?? 0}</span>
         </div>
         <div className="flex gap-2 items-center pl-4">
-          <BookOpenText
+          <Clock
             size={20}
-            weight="fill"
+            data-testid="icon-clock"
           />
           <span>{readingTime}</span>
         </div>

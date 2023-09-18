@@ -1,3 +1,3 @@
 'use client';
 
-export { BookOpenText, ChatCircleDots } from '@phosphor-icons/react';
+export { ChatCircleDots, Clock } from '@phosphor-icons/react';
