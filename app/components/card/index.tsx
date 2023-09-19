@@ -32,7 +32,7 @@ const Card = ({
   const postedDate = timeAgo(date);
 
   return (
-    <article className="break-inside-avoid py-4 mb-6 flex flex-col gap-4">
+    <article className="break-inside-avoid px-6 py-8 mb-8 flex flex-col gap-4 bg-neutral-100">
       {featuredImage && (
         <Link
           href={`post/${slug}`}
@@ -43,7 +43,7 @@ const Card = ({
             alt={featuredImage.node.altText}
             width={featuredImage.node.mediaDetails.width}
             height={featuredImage.node.mediaDetails.height}
-            className="self-center w-full"
+            className="self-center"
           />
         </Link>
       )}

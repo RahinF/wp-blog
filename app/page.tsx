@@ -20,9 +20,8 @@ export default async function Home() {
   const posts: Post[] = data.posts.nodes;
 
   return (
-    <main className="max-w-screen-2xl m-auto py-20 px-4">
-      Home
-      <section className="columns-2 2xl:columns-3 gap-20 [column-fill:_balance] box-border mx-auto before:box-inherit after:box-inherit">
+    <main className="max-w-screen-2xl m-auto pt-10 pb-20 px-4">
+      <section className="lg:columns-2 2xl:columns-3 gap-10 [column-fill:_balance] box-border mx-auto before:box-inherit after:box-inherit">
         {posts.map((post) => {
           return (
             <Card
