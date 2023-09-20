@@ -1,7 +1,7 @@
 import { ChatCircleDots, Clock } from '@assets/icons';
 import Categories from '@components/card/categories';
 import { calcAvgReadingTime } from '@utils/calcAvgReadingTime';
-import { timeAgo } from '@utils/timeAgoOrDate';
+import { timeAgoOrDate } from '@utils/timeAgoOrDate';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -29,7 +29,7 @@ const Card = ({
   title,
 }: Props) => {
   const readingTime = calcAvgReadingTime(content);
-  const postedDate = timeAgo(date);
+  const postedDate = timeAgoOrDate(date);
 
   return (
     <article className="break-inside-avoid px-6 py-8 mb-8 flex flex-col gap-4 bg-neutral-100">

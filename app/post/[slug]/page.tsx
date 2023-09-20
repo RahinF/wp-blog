@@ -1,5 +1,9 @@
+import { Clock } from '@assets/icons';
+import Categories from '@components/card/categories';
 import getAllPosts from '@lib/getAllPosts';
 import getPost from '@lib/getPost';
+import { calcAvgReadingTime } from '@utils/calcAvgReadingTime';
+import { format } from 'date-fns';
 import { Metadata } from 'next';
 import Image from 'next/image';
 
@@ -36,7 +40,7 @@ interface Post {
   title: string;
   date: string;
   content: string;
-  author: { node: Author };
+
   categories: { nodes: Category[] };
   tags: { nodes: Tag[] };
   commentCount: number;
@@ -50,32 +54,44 @@ const Post = async ({ params: { slug } }: Params) => {
     title,
     date,
     content,
-    author: { node: author },
+
     categories: { nodes: categories },
     tags: { nodes: tags },
     commentCount,
     comments: { nodes: comments },
   }: Post = data.post;
 
+  const author: Author | null = data.post.author?.node;
   const featuredImage: FeaturedImage = data.post.featuredImage?.node;
+  const formattedDate = format(new Date(date), 'do MMMM, yyyy');
 
   return (
     <div className="max-w-screen-2xl m-auto py-20">
-      <div>{id}</div>
-      <div>{date}</div>
+      {categories && <Categories categories={categories} />}
+      <h1 className="text-4xl font-bold mb-10 pt-6">{title}</h1>
 
-      <div className="flex items-center gap-4">
-        <Image
-          src={author.avatar.url}
-          alt={`${author.name}'s avatar`}
-          width={author.avatar.height}
-          height={author.avatar.height}
-          className="rounded-full"
-        />
-        <span>{author.name}</span>
+      <div className="flex items-center divide-x gap-4 mb-16">
+        <div className="flex items-center gap-4">
+          {author?.avatar && (
+            <Image
+              src={author.avatar.url}
+              alt={`${author.name}'s avatar`}
+              width={author.avatar.height}
+              height={author.avatar.height}
+              className="rounded-full"
+            />
+          )}
+          <span>{author ? author.name : 'anonymous'}</span>
+        </div>
+        <div className="pl-4">{formattedDate}</div>
+        <div className="flex gap-2 items-center pl-4">
+          <Clock
+            size={20}
+            data-testid="icon-clock"
+          />
+          {calcAvgReadingTime(content)}
+        </div>
       </div>
-
-      <h2>{title}</h2>
 
       {featuredImage && (
         <Image
@@ -83,44 +99,18 @@ const Post = async ({ params: { slug } }: Params) => {
           alt={featuredImage.altText}
           width={featuredImage.mediaDetails.width}
           height={featuredImage.mediaDetails.height}
+          className="m-auto mb-16"
         />
       )}
 
-      <div dangerouslySetInnerHTML={{ __html: content }} />
-
-      <div>
-        <h3>categories</h3>
-        <div className="flex gap-4">
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              type="button"
-              className="border rounded-3xl px-4 py-2 transition hover:bg-blue-500 hover:text-white duration-300"
-            >
-              {category.name}
-            </button>
-          ))}
+      <div className="grid grid-cols-4">
+        <div className="col-span-3 p-4 flex flex-col items-center">
+          <div
+            dangerouslySetInnerHTML={{ __html: content }}
+            className="prose flex flex-col items-center"
+          />
         </div>
-
-        <div>
-          <h3>tags</h3>
-          <div className="flex gap-4">
-            {tags.map((tag) => (
-              <button
-                key={tag.id}
-                type="button"
-                className="border rounded-3xl px-4 py-2 transition hover:bg-green-500 hover:text-white duration-300"
-              >
-                {tag.name}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <h3>comments</h3>
-        <span>{commentCount}</span>
+        <div className="p-4">related</div>
       </div>
     </div>
   );

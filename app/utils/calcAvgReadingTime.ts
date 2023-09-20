@@ -12,11 +12,21 @@ export const calcAvgReadingTime = (content: string) => {
   const wordsReadPerSec = averageWordReadPerMin / 60;
   const readingTime = wordsReadPerSec * wordCount * 1000;
 
-  return humanizeDuration(readingTime, {
+  const humanizedText = humanizeDuration(readingTime, {
     units: ['h', 'm'],
     maxDecimalPoints: 0,
     conjunction: ' and ',
     largest: 1,
     round: true,
   });
+
+  const isPlural = humanizedText.at(-1) === 's';
+
+  let readingTimeString = humanizedText;
+
+  if (isPlural) {
+    readingTimeString = humanizedText.slice(0, -1);
+  }
+
+  return `${readingTimeString} read`;
 };
