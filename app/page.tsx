@@ -1,5 +1,5 @@
-import Card from '@components/card';
 import getAllPosts from '@lib/getAllPosts';
+import Card from './components/card';
 
 interface Post {
   id: string;

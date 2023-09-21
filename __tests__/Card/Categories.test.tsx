@@ -1,5 +1,5 @@
-import Categories from '@components/card/categories';
-import config from '@components/card/config';
+import Categories from '@app/components/Card/Categories';
+import config from '@components/Card/config';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import testData from '@utils/testingData/card/data';

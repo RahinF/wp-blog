@@ -1,4 +1,4 @@
-import config from '@components/card/config';
+import config from '@components/Card/config';
 import Link from 'next/link';
 
 interface Props {

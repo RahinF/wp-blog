@@ -1,6 +1,6 @@
 import { calcAvgReadingTime } from '@app/utils/calcAvgReadingTime';
 import { removeHTMLTags } from '@app/utils/removeHTMLTags';
-import Card from '@components/card';
+import Card from '@components/Card';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import testData from '@utils/testingData/card/data';

@@ -1,5 +1,5 @@
+import Categories from '@app/components/Card/Categories';
 import { ChatCircleDots, Clock } from '@assets/icons';
-import Categories from '@components/card/categories';
 import { calcAvgReadingTime } from '@utils/calcAvgReadingTime';
 import { timeAgoOrDate } from '@utils/timeAgoOrDate';
 import Image from 'next/image';
